@@ -7,13 +7,15 @@ import { formatSeasons } from "./utils/formatSeasons";
 
 import Episodes from "./components/Episodes";
 import "./styles.css";
+/*************************my import *******************/
+import { fetchShow } from './api/fetchShow';
 
 export default function App() {
   const [show, setShow] = useState(null);
   const [seasons, setSeasons] = useState([]);
   const [selectedSeason, setSelectedSeason] = useState("");
   const episodes = seasons[selectedSeason] || [];
-
+/*
   useEffect(() => {
     const fetchShow = () => {
       axios
@@ -27,6 +29,18 @@ export default function App() {
     };
     fetchShow();
   }, []);
+    */
+/*************my useEffect fetchShow  ***************************/
+useEffect(() => {
+  fetchShow()
+  .then( data => {
+    setShow(data);
+    setSeasons(formatSeasons(data._embedded.episodes));
+  })
+  .catch( err => {
+    console.log('error fetching show info', err)
+  });
+},[]);
 
   const handleSelect = e => {
     setSelectedSeason(e.value);
